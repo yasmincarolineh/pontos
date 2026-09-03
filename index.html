@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema Integrado de Gestão e Operações</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Local CSS -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen">
+  <div class="app-container">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="p-6 border-b border-slate-200 flex items-center gap-3">
+        <div class="p-2 bg-blue-600 text-white rounded-lg">
+          <i data-lucide="layers" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h1 class="font-bold text-slate-900 text-lg leading-tight">SIGO</h1>
+          <p class="text-xs text-slate-500">Gestão & Operações</p>
+        </div>
+      </div>
+
+      <nav class="p-4 flex-1 space-y-1">
+        <a href="#" class="nav-link active">
+          <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+          <span>Dashboard</span>
+        </a>
+        <a href="#" class="nav-link">
+          <i data-lucide="clipboard-list" class="w-5 h-5"></i>
+          <span>Operações</span>
+        </a>
+        <a href="#" class="nav-link">
+          <i data-lucide="users" class="w-5 h-5"></i>
+          <span>Equipes</span>
+        </a>
+        <a href="#" class="nav-link">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span>Configurações</span>
+        </a>
+      </nav>
+
+      <div class="p-4 border-t border-slate-200">
+        <div class="flex items-center gap-3 px-2 py-2">
+          <div class="w-9 h-9 rounded-full bg-slate-200 flex items-center justify-center font-semibold text-slate-700">
+            OP
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-medium text-slate-900 truncate">Operador Principal</p>
+            <p class="text-xs text-slate-500 truncate">operador@sigo.com</p>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+
+      <!-- Top Header -->
+      <header class="top-header">
+        <div class="flex items-center gap-4">
+          <h2 class="text-xl font-bold text-slate-800">Painel Operacional</h2>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="btn-new-operation" class="btn btn-primary">
+            <i data-lucide="plus-circle" class="w-4 h-4"></i>
+            <span>Nova Operação</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Body -->
+      <section class="content-body space-y-6">
+
+        <!-- Summary Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="card flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-500">Total de Operações</p>
+              <h3 class="text-2xl font-bold text-slate-900 mt-1">12</h3>
+            </div>
+            <div class="p-3 bg-blue-50 text-blue-600 rounded-lg">
+              <i data-lucide="activity" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="card flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-500">Em Andamento</p>
+              <h3 class="text-2xl font-bold text-amber-600 mt-1">4</h3>
+            </div>
+            <div class="p-3 bg-amber-50 text-amber-600 rounded-lg">
+              <i data-lucide="clock" class="w-6 h-6"></i>
+            </div>
+          </div>
+
+          <div class="card flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-500">Concluídas</p>
+              <h3 class="text-2xl font-bold text-emerald-600 mt-1">8</h3>
+            </div>
+            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
+              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operations Data Table -->
+        <div class="card space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-semibold text-slate-900 text-lg">Registro de Operações</h3>
+            <span class="text-xs text-slate-500">Exibindo itens recentes</span>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Título / Tarefa</th>
+                  <th>Descrição</th>
+                  <th>Status</th>
+                  <th>Data</th>
+                </tr>
+              </thead>
+              <tbody id="operations-tbody">
+                <!-- Dynamic Content Loaded by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Modal Nova Operação -->
+  <div id="modal-new-op" class="modal-overlay hidden">
+    <div class="modal-content p-6 space-y-5">
+      <div class="flex items-center justify-between border-b border-slate-200 pb-3">
+        <h3 class="font-bold text-lg text-slate-900">Registrar Nova Operação</h3>
+        <button id="btn-close-modal" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="form-new-op" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Título da Operação</label>
+          <input type="text" id="op-title" required placeholder="Ex.: Manutenção Preventiva" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Descrição</label>
+          <textarea id="op-description" rows="3" placeholder="Detalhes do procedimento..." class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Status Inicial</label>
+          <select id="op-status" class="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="pending">Pendente</option>
+            <option value="in_progress">Em Andamento</option>
+            <option value="completed">Concluído</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Localização (GPS)</label>
+          <div class="flex gap-2">
+            <input type="text" id="op-location" readonly placeholder="Aguardando dados GPS..." class="flex-1 px-3 py-2 bg-slate-100 border border-slate-300 rounded-md text-slate-600">
+            <button type="button" id="btn-get-location" class="btn btn-outline text-xs">
+              <i data-lucide="map-pin" class="w-4 h-4"></i>
+              <span>Obter Localização</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-3 pt-3 border-t border-slate-200">
+          <button type="button" onclick="document.getElementById('modal-new-op').classList.add('hidden')" class="btn btn-outline">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar Operação</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Entry Script (ES Module) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
