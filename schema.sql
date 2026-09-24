@@ -26,9 +26,23 @@ CREATE TABLE IF NOT EXISTS public.operations (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
 );
 
+-- 3. Tabela de Controle de Ponto (Entrada e Saída)
+CREATE TABLE IF NOT EXISTS public.time_entries (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID REFERENCES public.profiles(id) ON DELETE SET NULL,
+    employee_name TEXT NOT NULL DEFAULT 'Operador Principal',
+    entry_time TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    exit_time TIMESTAMP WITH TIME ZONE,
+    status TEXT NOT NULL DEFAULT 'open', -- open (em turno), closed (finalizado)
+    notes TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
 -- Habilitar RLS (Row Level Security)
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.operations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.time_entries ENABLE ROW LEVEL SECURITY;
 
 -- Políticas de RLS para Profiles
 CREATE POLICY "Usuários podem visualizar todos os perfis"
@@ -55,3 +69,16 @@ CREATE POLICY "Usuários podem atualizar suas próprias operações"
 CREATE POLICY "Usuários podem deletar suas próprias operações"
     ON public.operations FOR DELETE
     USING (auth.uid() = user_id OR true);
+
+-- Políticas de RLS para Time Entries (Controle de Ponto)
+CREATE POLICY "Leitura de registro de ponto"
+    ON public.time_entries FOR SELECT
+    USING (true);
+
+CREATE POLICY "Criação de registro de ponto"
+    ON public.time_entries FOR INSERT
+    WITH CHECK (true);
+
+CREATE POLICY "Atualização de registro de ponto"
+    ON public.time_entries FOR UPDATE
+    USING (true);
