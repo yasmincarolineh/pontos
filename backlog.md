@@ -10,3 +10,4 @@
 | TASK-004 | Serviços de Autenticação e API CRUD | Concluído | Google Jules | 2026-09-03 | Impl. js/services/auth.js e api.js |
 | TASK-005 | Utilitários de Mídia e Geolocalização | Concluído | Google Jules | 2026-09-03 | Impl. js/utils/media.js e icons.js |
 | TASK-006 | Documentação e Schema SQL | Concluído | Google Jules | 2026-09-03 | Impl. README.md e schema.sql |
+| TASK-007 | Controle de Ponto (Entrada/Saída/Supabase) | Concluído | Google Jules | 2026-09-03 | Impl. js/services/ponto.js, relógio digital e registros |

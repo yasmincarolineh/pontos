@@ -35,7 +35,11 @@
           <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
           <span>Dashboard</span>
         </a>
-        <a href="#" class="nav-link">
+        <a href="#section-ponto" class="nav-link">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+          <span>Controle de Ponto</span>
+        </a>
+        <a href="#section-operacoes" class="nav-link">
           <i data-lucide="clipboard-list" class="w-5 h-5"></i>
           <span>Operações</span>
         </a>
@@ -68,7 +72,7 @@
       <!-- Top Header -->
       <header class="top-header">
         <div class="flex items-center gap-4">
-          <h2 class="text-xl font-bold text-slate-800">Painel Operacional</h2>
+          <h2 class="text-xl font-bold text-slate-800">Painel Operacional & Ponto</h2>
         </div>
 
         <div class="flex items-center gap-3">
@@ -106,17 +110,82 @@
 
           <div class="card flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium text-slate-500">Concluídas</p>
-              <h3 class="text-2xl font-bold text-emerald-600 mt-1">8</h3>
+              <p class="text-sm font-medium text-slate-500">Status do Turno</p>
+              <h3 id="shift-status-text" class="text-lg font-bold text-slate-600 mt-1">Fora de Turno</h3>
             </div>
-            <div class="p-3 bg-emerald-50 text-emerald-600 rounded-lg">
-              <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+            <div id="shift-status-icon" class="p-3 bg-slate-100 text-slate-500 rounded-lg">
+              <i data-lucide="user-check" class="w-6 h-6"></i>
             </div>
           </div>
         </div>
 
-        <!-- Operations Data Table -->
-        <div class="card space-y-4">
+        <!-- Section: Controle de Ponto (Entrada / Saída) -->
+        <div id="section-ponto" class="card space-y-6">
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-200 pb-4">
+            <div>
+              <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                <i data-lucide="timer" class="w-5 h-5 text-blue-600"></i>
+                Controle de Ponto Eletrônico
+              </h3>
+              <p class="text-xs text-slate-500 mt-0.5">Registro de entrada, saída e controle de jornada com integração Supabase.</p>
+            </div>
+
+            <div class="flex items-center gap-4 bg-slate-100 px-4 py-2 rounded-lg">
+              <div class="text-right">
+                <span id="current-date-display" class="block text-xs font-medium text-slate-500">--/--/----</span>
+                <span id="current-clock-display" class="block text-lg font-mono font-bold text-slate-800">00:00:00</span>
+              </div>
+              <div class="p-2 bg-white rounded border border-slate-200 text-blue-600">
+                <i data-lucide="clock" class="w-5 h-5"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ponto Actions Bar -->
+          <div class="flex flex-wrap items-center justify-between gap-4 bg-slate-50 p-4 rounded-lg border border-slate-200">
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-semibold text-slate-700">Ação do Turno:</span>
+              <button id="btn-clock-in" class="btn btn-primary bg-emerald-600 hover:bg-emerald-700">
+                <i data-lucide="log-in" class="w-4 h-4"></i>
+                <span>Registrar Entrada</span>
+              </button>
+
+              <button id="btn-clock-out" class="btn btn-outline border-red-300 text-red-600 hover:bg-red-50 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                <i data-lucide="log-out" class="w-4 h-4"></i>
+                <span>Registrar Saída</span>
+              </button>
+            </div>
+
+            <div class="text-xs text-slate-500 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i>
+              <span>Sincronização em tempo real via Supabase</span>
+            </div>
+          </div>
+
+          <!-- Time Entries History Table -->
+          <div class="space-y-3">
+            <h4 class="font-semibold text-slate-800 text-sm">Histórico de Registros de Ponto</h4>
+            <div class="table-container">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Colaborador</th>
+                    <th>Hora de Entrada</th>
+                    <th>Hora de Saída</th>
+                    <th>Status</th>
+                    <th>Duração</th>
+                  </tr>
+                </thead>
+                <tbody id="ponto-tbody">
+                  <!-- Dynamic Time Entry Logs -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section: Operations Data Table -->
+        <div id="section-operacoes" class="card space-y-4">
           <div class="flex items-center justify-between">
             <h3 class="font-semibold text-slate-900 text-lg">Registro de Operações</h3>
             <span class="text-xs text-slate-500">Exibindo itens recentes</span>
